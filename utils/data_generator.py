@@ -17,6 +17,10 @@ class GenerateData:
         return fake.random_int(start, end)
 
     @staticmethod
-    def generate_random_data():
-        return f'{fake.year()}-0{fake.random_int(0,9)}-0{fake.random_int(0, 9)}'
+    def generate_random_checkin_date():
+        return f'2024-0{fake.random_int(1, 9)}-0{fake.random_int(1, 9)}'
+
+    @staticmethod
+    def generate_random_checkout_date():
+        return f'2025-0{fake.random_int(1, 9)}-0{fake.random_int(1, 9)}'
 

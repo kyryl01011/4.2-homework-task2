@@ -1,6 +1,4 @@
 from data.booking_data import BookingDataResponse, BookingDataModel, BookingData
-from utils.data_generator import GenerateData
-
 
 class TestBooking:
 
@@ -27,21 +25,27 @@ class TestBooking:
         return created_booking
 
     def test_search_id_by_full_name(self, auth_session, booking_data):
+        booking_data = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking']
         found_result = auth_session.send_request('GET', f'/booking?firstname={booking_data.get('firstname')}&lastname={booking_data.get('lastname')}')
-        first_match = found_result.json()[0]
-        print(first_match)
+        first_match = found_result.json()[0]['bookingid']
+        assert found_result.status_code == 200
+        assert found_result.json()[0]
+        return first_match
+
+    def test_search_id_by_check_dates(self, auth_session, booking_data):
+        booking_data = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking']['bookingdates']
+        found_result = auth_session.send_request('GET', f'/booking?checkin={booking_data['checkin']}&checkout={booking_data['checkout']}')
         assert found_result.status_code == 200
         assert found_result.json()[0]
         return found_result
 
-    def test_search_id_by_check_dates(self, auth_session, booking_data):
-        print('FOUND RESULT: ')
-        found_result = auth_session.send_request('GET', f'/booking?checkin={booking_data['bookingdates']['checkin']})&checkout={booking_data['bookingdates']['checkout']}')
-        assert found_result.status_code == 200
-        assert found_result.json()[0]
-
-    def test_search_booking_data_by_id(self, auth_session, booking_id) -> BookingDataModel:
-        return BookingDataModel.model_validate_json(auth_session.send_request('GET', f'/booking/{booking_id}').text)
+    def test_search_booking_data_by_id(self, auth_session, booking_data) -> BookingDataModel:
+        booking_id = self.test_successful_booking_creation(auth_session, booking_data).bookingid
+        response = auth_session.send_request('GET', f'/booking/{booking_id}')
+        received_booking_data = BookingDataModel.model_validate_json(response.text)
+        assert response.status_code == 200
+        assert received_booking_data == BookingDataModel.model_validate(booking_data), f'Received data {received_booking_data} not equal initial data {BookingDataModel.model_validate(booking_data)}'
+        return received_booking_data
 
     def test_full_booking_update(self, auth_session, booking_data):
         new_booking = self.test_successful_booking_creation(auth_session, booking_data)
@@ -57,9 +61,11 @@ class TestBooking:
         booking_id = created_booking_data.bookingid
         new_booking_data = BookingData.create_booking_data()
         new_booking_data_dict = new_booking_data.model_dump()
+        if created_booking_data.booking.depositpaid:
+            new_booking_data_dict['depositpaid'] = False
+        else:
+            new_booking_data_dict['depositpaid'] = True
         for key, value in new_booking_data_dict.items():
-            print(new_booking_data_dict[key])
             patch_response = auth_session.send_request('PATCH', f'/booking/{booking_id}', {key: value})
-            print(patch_response.text)
             assert patch_response.status_code == 200
             assert patch_response.json()[key] != booking_data_dict[key], f'Field {key} did not change: expected new "{value}, got {patch_response.json()[key]}", old one "{booking_data_dict[key]}"'

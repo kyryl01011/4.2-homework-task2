@@ -28,8 +28,8 @@ class BookingData:
             totalprice= GenerateData.generate_random_int(100, 10000),
             depositpaid= True,
             bookingdates= BookingDatesModel(
-                checkin= f"2024-04-05",
-                checkout= f"2024-04-08"
+                checkin= GenerateData.generate_random_checkin_date(),
+                checkout= GenerateData.generate_random_checkout_date()
             ),
-            additionalneeds= "Breakfast"
+            additionalneeds= GenerateData.generate_first_name()
         )

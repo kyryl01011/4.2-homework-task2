@@ -24,13 +24,12 @@ def auth_session():
     fresh_session.session.close()
 
 @pytest.fixture(scope='session')
-def booking_data(auth_session) -> BookingDataModel:
-    return BookingData.create_booking_data().model_dump()
+def booking_data(auth_session):
+    created_data = BookingData.create_booking_data()
+    yield created_data.model_dump()
 
-    # че-то оно не хочет удалять
-    # created_booking_id = auth_session.send_request('GET', f'/booking?firstname={fake_booking_data.firstname}&lastname={fake_booking_data.lastname}').json()[0].get('bookingid', '')
-    # created_booking_exists = auth_session.send_request('GET', f'/booking/{created_booking_id}')
-    # if created_booking_exists:
-    #     auth_session.send_request('DELETE', f'/booking/{created_booking_id}')
-    #     second_check = auth_session.send_request('DELETE', f'/booking/{created_booking_id}')
-    # assert second_check.status_code == 404, f'Failed on removing created booking with id {created_booking_id}'
+    # booking removal teardown
+    found_result = auth_session.send_request('GET',f'/booking?firstname={created_data.firstname}&lastname={created_data.lastname}')
+    first_match = found_result.json()[0]['bookingid']
+    assert auth_session.send_request('DELETE', f'/booking/{first_match}').status_code == 201
+    assert auth_session.send_request('GET', f'/booking/{first_match}').status_code == 404
