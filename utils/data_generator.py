@@ -18,5 +18,5 @@ class GenerateData:
 
     @staticmethod
     def generate_random_data():
-        return f'{fake.year()}-{fake.month()}-{fake.day_of_month()}'
+        return f'{fake.year()}-0{fake.random_int(0,9)}-0{fake.random_int(0, 9)}'
 

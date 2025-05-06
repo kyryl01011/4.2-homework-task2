@@ -2,7 +2,7 @@ import pytest
 import requests
 
 from custom_requester.custom_requester import CustomRequester
-from data.booking_data import BookingData
+from data.booking_data import BookingData, BookingDataModel
 from enums.consts import BASE_HEADERS, BASE_DATA
 
 
@@ -24,9 +24,8 @@ def auth_session():
     fresh_session.session.close()
 
 @pytest.fixture(scope='session')
-def booking_data(auth_session):
-    fake_booking_data = BookingData.create_booking_data()
-    yield fake_booking_data.model_dump()
+def booking_data(auth_session) -> BookingDataModel:
+    return BookingData.create_booking_data().model_dump()
 
     # че-то оно не хочет удалять
     # created_booking_id = auth_session.send_request('GET', f'/booking?firstname={fake_booking_data.firstname}&lastname={fake_booking_data.lastname}').json()[0].get('bookingid', '')
