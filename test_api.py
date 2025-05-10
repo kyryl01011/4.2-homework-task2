@@ -11,7 +11,7 @@ class TestBooking:
     def test_successful_booking_creation(self, auth_session, booking_data) -> BookingDataResponse:
         endpoint = '/booking'
         generated_booking_data = BookingDataModel.model_validate(booking_data)
-        response = auth_session.send_request('POST', endpoint, data=booking_data)
+        response = auth_session.send_request('POST', endpoint, json=booking_data)
         created_booking = BookingDataResponse.model_validate_json(response.text)
         assert response.status_code == 200
         # assert generated_booking_data.firstname == created_booking.booking.firstname

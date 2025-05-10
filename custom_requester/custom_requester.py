@@ -13,7 +13,7 @@ class CustomRequester:
     def get_full_url(self, endpoint):
         return self._base_url + endpoint
 
-    def send_request(self, method, endpoint, data=None):
+    def send_request(self, method, endpoint, json=None, data=None):
         url = self._base_url + endpoint
-        response = self.session.request(method, url, json=data)
+        response = self.session.request(method, url, json=json, data=data)
         return response

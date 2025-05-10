@@ -7,9 +7,8 @@
     <list default="true" id="5ac8ce99-8387-4f4f-909f-523a0507fef3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/booking_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/booking_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom_requester/custom_requester.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_requester/custom_requester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/data_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/data_generator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,37 +36,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python tests.Python tests for test_api.TestBooking.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_booking_creation.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_create_booking_search_by_check_dates.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_full_booking_update.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_get_all_bookings_ids.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_partial_booking_update.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_search_booking_data_by_id.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_search_by_check_dates.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_search_id_by_check_dates.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_search_id_by_full_name.executor": "Run",
-    "Python tests.Python tests for test_api.TestBooking.test_successful_booking_creation.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_booking_creation.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_create_booking_search_by_check_dates.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_full_booking_update.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_get_all_bookings_ids.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_partial_booking_update.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_search_booking_data_by_id.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_search_by_check_dates.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_search_id_by_check_dates.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_search_id_by_full_name.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_api.TestBooking.test_successful_booking_creation.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Apps\module_4_task_2" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests for test_api.TestBooking.test_search_id_by_full_name">
+  <component name="RunManager" selected="Python tests.Python tests for test_api.TestBooking">
     <configuration name="Python tests for test_api.TestBooking" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="module_4_task_2" />
       <option name="ENV_FILES" value="" />
@@ -150,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.Python tests for test_api.TestBooking" />
+        <item itemvalue="Python tests.Python tests for test_api.TestBooking.test_search_id_by_check_dates" />
         <item itemvalue="Python tests.Python tests for test_api.TestBooking.test_search_id_by_full_name" />
         <item itemvalue="Python tests.Python tests for test_api.TestBooking.test_successful_booking_creation" />
-        <item itemvalue="Python tests.Python tests for test_api.TestBooking" />
         <item itemvalue="Python tests.Python tests for test_api.TestBooking.test_search_booking_data_by_id" />
-        <item itemvalue="Python tests.Python tests for test_api.TestBooking.test_search_id_by_check_dates" />
       </list>
     </recent_temporary>
   </component>
@@ -177,7 +176,8 @@
       <workItem from="1746456672945" duration="7488000" />
       <workItem from="1746466465280" duration="7866000" />
       <workItem from="1746527556190" duration="4618000" />
-      <workItem from="1746539560042" duration="16732000" />
+      <workItem from="1746539560042" duration="17586000" />
+      <workItem from="1746906814213" duration="354000" />
     </task>
     <servers />
   </component>
@@ -185,6 +185,6 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/module_4_task_2$.coverage" NAME=" Coverage Results" MODIFIED="1746563212446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/module_4_task_2$.coverage" NAME=" Coverage Results" MODIFIED="1746907161953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

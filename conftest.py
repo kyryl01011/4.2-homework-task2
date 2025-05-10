@@ -12,7 +12,7 @@ def auth_session():
     session.headers.update(BASE_HEADERS)
 
     fresh_session = CustomRequester(session)
-    response = fresh_session.send_request('POST', '/auth', data=BASE_DATA)
+    response = fresh_session.send_request('POST', '/auth', json=BASE_DATA)
     print(response.json())
     token = response.json().get('token', False)
     if token:
