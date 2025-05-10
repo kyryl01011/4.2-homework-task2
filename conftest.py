@@ -13,7 +13,6 @@ def auth_session():
 
     fresh_session = CustomRequester(session)
     response = fresh_session.send_request('POST', '/auth', json=BASE_DATA)
-    print(response.json())
     token = response.json().get('token', False)
     if token:
         fresh_session.session.headers.update({'Cookie': f'token={token}'})
@@ -31,5 +30,5 @@ def booking_data(auth_session):
     # booking removal teardown
     found_result = auth_session.send_request('GET',f'/booking?firstname={created_data.firstname}&lastname={created_data.lastname}')
     first_match = found_result.json()[0]['bookingid']
-    assert auth_session.send_request('DELETE', f'/booking/{first_match}').status_code == 201
-    assert auth_session.send_request('GET', f'/booking/{first_match}').status_code == 404
+    auth_session.send_request('DELETE', f'/booking/{first_match}', expected_status_code=201)
+    auth_session.send_request('GET', f'/booking/{first_match}', expected_status_code=404)
