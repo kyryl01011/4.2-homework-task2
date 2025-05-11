@@ -1,5 +1,3 @@
-from http import HTTPStatus
-
 from enums.consts import BASE_URL
 from requests import Session
 
