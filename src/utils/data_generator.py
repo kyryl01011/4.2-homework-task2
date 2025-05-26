@@ -2,7 +2,7 @@ from faker import Faker
 
 fake = Faker()
 
-class GenerateData:
+class DataGenerator:
 
     @staticmethod
     def generate_first_name():

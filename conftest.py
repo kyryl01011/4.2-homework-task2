@@ -2,33 +2,32 @@ import pytest
 import requests
 
 from custom_requester.custom_requester import CustomRequester
-from data.booking_data import BookingData, BookingDataModel
-from enums.consts import BASE_HEADERS, BASE_DATA
+from src.api.auth_client import AuthApiClient
+from src.data_models.booking_data import BookingData
+from src.enums.base_request_attributes import BaseRequestAttributes
 
 
 @pytest.fixture(scope='session')
 def auth_session():
     session = requests.Session()
-    session.headers.update(BASE_HEADERS)
+    session.headers.update(BaseRequestAttributes.HEADERS.value)
 
-    fresh_session = CustomRequester(session)
-    response = fresh_session.send_request('POST', '/auth', json=BASE_DATA)
-    token = response.json().get('token', False)
-    if token:
-        fresh_session.session.headers.update({'Cookie': f'token={token}'})
-    else:
-        raise ValueError(f'Failed to get auth token - {token}')
+    authed_session = AuthApiClient(session)
+    authed_session.auth_current_session()
 
-    yield fresh_session
-    fresh_session.session.close()
+    yield authed_session
+
+    authed_session.session.close()
+
 
 @pytest.fixture(scope='session')
 def booking_data(auth_session):
     created_data = BookingData.create_booking_data()
-    yield created_data.model_dump()
+    yield created_data
 
     # booking removal teardown
-    found_result = auth_session.send_request('GET',f'/booking?firstname={created_data.firstname}&lastname={created_data.lastname}')
+    found_result = auth_session.send_request('GET',
+                                             f'/booking?firstname={created_data.firstname}&lastname={created_data.lastname}')
     first_match = found_result.json()[0]['bookingid']
     auth_session.send_request('DELETE', f'/booking/{first_match}', expected_status_code=201)
     auth_session.send_request('GET', f'/booking/{first_match}', expected_status_code=404)
