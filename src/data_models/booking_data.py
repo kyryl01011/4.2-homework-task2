@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from src.utils.data_generator import GenerateData
+from src.utils.data_generator import DataGenerator
 
 
 class BookingDatesModel(BaseModel):
@@ -26,13 +26,13 @@ class BookingData:
     @staticmethod
     def create_booking_data() -> BookingDataModel:
         return BookingDataModel(
-            firstname=GenerateData.generate_first_name(),
-            lastname=GenerateData.generate_last_name(),
-            totalprice=GenerateData.generate_random_int(100, 10000),
+            firstname=DataGenerator.generate_first_name(),
+            lastname=DataGenerator.generate_last_name(),
+            totalprice=DataGenerator.generate_random_int(100, 10000),
             depositpaid=True,
             bookingdates=BookingDatesModel(
-                checkin=GenerateData.generate_random_checkin_date(),
-                checkout=GenerateData.generate_random_checkout_date()
+                checkin=DataGenerator.generate_random_checkin_date(),
+                checkout=DataGenerator.generate_random_checkout_date()
             ),
-            additionalneeds=GenerateData.generate_first_name()
+            additionalneeds=DataGenerator.generate_first_name()
         )

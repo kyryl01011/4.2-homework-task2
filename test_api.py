@@ -10,23 +10,9 @@ class TestBooking:
             0], f'Unexpected type of response data: {type(response.json())}, expected list'
         return response
 
-    def test_successful_booking_creation(self, auth_session, booking_data) -> BookingDataResponse:
-        endpoint = '/booking'
-        generated_booking_data = BookingDataModel.model_validate(booking_data)
-        response = auth_session.send_request('POST', endpoint, json=booking_data)
-        created_booking = BookingDataResponse.model_validate_json(response.text)
-        second_check_response = auth_session.send_request('GET', f'{endpoint}/{created_booking.bookingid}')
-        second_check_data = BookingDataModel.model_validate_json(second_check_response.text)
-        # assert generated_booking_data.firstname == created_booking.booking.firstname
-        # assert generated_booking_data.lastname == created_booking.booking.lastname
-        # assert generated_booking_data.totalprice == created_booking.booking.totalprice
-        # assert generated_booking_data.depositpaid == created_booking.booking.depositpaid
-        # assert generated_booking_data.bookingdates.checkin == created_booking.booking.bookingdates.checkin
-        # assert generated_booking_data.bookingdates.checkout == created_booking.booking.bookingdates.checkout
-        # assert generated_booking_data.additionalneeds == created_booking.booking.additionalneeds
-        assert generated_booking_data == created_booking.booking, f'Initial generated data not equals to created data: initial - {generated_booking_data}, created - {created_booking.booking}'
-        assert generated_booking_data == second_check_data, f'Generated data not equals to data received from GET request by ID: generated - {generated_booking_data}, got - {second_check_data}'
-        return created_booking
+    def test_successful_booking_creation(self, scenarios, booking_data) -> BookingDataResponse:
+        result_model = scenarios.create_booking(booking_data)
+        return result_model
 
     def test_search_id_by_full_name(self, auth_session, booking_data):
         booking_data = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking']

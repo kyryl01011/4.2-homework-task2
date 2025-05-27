@@ -14,6 +14,10 @@ class CustomRequester:
     def send_request(self, method, endpoint, json=None, data=None, expected_status_code=200):
         url = self._base_url + endpoint
         response = self.session.request(method, url, json=json, data=data)
+        print(f'-----REQUEST------'
+              f'\n{response.request.url}')
+        print(f'-----RESPONSE------'
+              f'\n{response.text}')
         assert response.status_code == expected_status_code, (f'Unexpected status code: {response.status_code}, '
                                                               f'expected: {expected_status_code}')
         return response
