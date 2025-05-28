@@ -16,32 +16,26 @@ class TestBooking:
         scenarios.get_booking_by_id(created_booking_model.bookingid)
         scenarios.delete_booking_by_id(created_booking_model.bookingid)
 
-    def test_successful_booking_creation(self, scenarios, booking_data) -> BookingDataResponse:
-        result_model = scenarios.create_booking(booking_data)
-        return result_model
+    def test_successful_booking_creation(self, scenarios, booking_data):
+        scenarios.create_booking(booking_data)
 
     def test_search_id_by_full_name(self, scenarios, booking_data):
         created_booking_response_model = scenarios.create_booking(booking_data)
-        found_result = scenarios.get_booking_id_by_full_name(
+        scenarios.get_booking_id_by_full_name(
             created_booking_response_model.booking.firstname,
             created_booking_response_model.booking.lastname)
 
+    def test_search_id_by_check_dates(self, scenarios, booking_data):
+        created_booking_response_model = scenarios.create_booking(booking_data)
+        scenarios.get_booking_id_by_check_dates(
+            created_booking_response_model.booking.bookingdates.checkin,
+            created_booking_response_model.booking.bookingdates.checkout)
 
-    def test_search_id_by_check_dates(self, auth_session, booking_data):
-        booking_dates = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking'][
-            'bookingdates']
-        found_result = auth_session.send_request('GET',
-                                                 f'/booking?checkin={booking_dates['checkin']}&checkout={booking_dates['checkout']}')
-        assert found_result.json()[0], f'Could not find booking by booking dates: {booking_dates}'
-        return found_result
+    def test_search_booking_data_by_id(self, scenarios, booking_data):
+        created_booking_model = scenarios.create_booking(booking_data)
+        scenarios.get_booking_by_id(created_booking_model.bookingid)
 
-    def test_search_booking_data_by_id(self, auth_session, booking_data) -> BookingDataModel:
-        booking_id = self.test_successful_booking_creation(auth_session, booking_data).bookingid
-        response = auth_session.send_request('GET', f'/booking/{booking_id}')
-        received_booking_data = BookingDataModel.model_validate_json(response.text)
-        assert received_booking_data == BookingDataModel.model_validate(
-            booking_data), f'Received data {received_booking_data} not equal initial data {BookingDataModel.model_validate(booking_data)}'
-        return received_booking_data
+    # TODO
 
     def test_full_booking_update(self, auth_session, booking_data):
         new_booking = self.test_successful_booking_creation(auth_session, booking_data)

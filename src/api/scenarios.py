@@ -1,3 +1,4 @@
+import pytest
 from requests import Response
 
 from src.api.booking_client import BookingApiClient
@@ -56,14 +57,55 @@ class BookingScenarios:
 
     def get_booking_id_by_full_name(self, first_name: str, last_name: str):
         booking_response = self.booking_api_client.get_booking_id_by_full_name(first_name, last_name)
-        booking_id = booking_response.json()[0].get('bookingid')
+        booking_id_models_list = validate_response(booking_response, BookingIDsModel)
+        if booking_id_models_list:
+            first_match = booking_id_models_list[0]
+            booking_id = first_match.bookingid
 
-        if booking_id:
-            booking_data_model = self.get_booking_by_id(booking_id)
+        booking_data_model = self.get_booking_by_id(booking_id)
 
-        assert booking_id, f'Booking ID was not found!'
-        assert first_name == booking_data_model.firstname, \
-            (
-                f'Initial firs'
-            )
-        assert last_name == booking_data_model.lastname
+        assert booking_id_models_list, f'No booking as {first_name} {last_name} was found: got empty list!'
+        assert isinstance(booking_id, int), \
+            (f'Unexpected ID type: '
+             f'{booking_id} - '
+             f'{type(booking_id)}')
+        assert booking_data_model.firstname == first_name, \
+            (f'Unexpected booking firstname: '
+             f'\nExpected: {first_name}'
+             f'\nGot: {booking_data_model.firstname}')
+        assert booking_data_model.lastname == last_name, \
+            (f'Unexpected booking lastname: '
+             f'\nExpected: {last_name}'
+             f'\nGot: {booking_data_model.lastname}')
+
+        return booking_id
+
+    def get_booking_id_by_check_dates(self, check_in: str, check_out: str):
+        booking_response = self.booking_api_client.get_booking_id_by_check_dates(check_in, check_out)
+        booking_id_models_list = validate_response(booking_response, BookingIDsModel)
+        if booking_id_models_list:
+            booking_id = None
+            for booking_id_model in booking_id_models_list:
+                current_id = booking_id_model.bookingid
+                booking_data_model = self.get_booking_by_id(current_id)
+                if booking_data_model.bookingdates.checkin == check_in and booking_data_model.bookingdates.checkout == check_out:
+                    booking_id = current_id
+                    break
+
+        if booking_id is None:
+            pytest.fail(f'No booking as {check_in}-{check_out} check dates was found: got empty list!')
+
+        assert isinstance(booking_id, int), \
+            (f'Unexpected ID type: '
+             f'{booking_id} - '
+             f'{type(booking_id)}')
+        assert booking_data_model.bookingdates.checkin == check_in, \
+            (f'Unexpected booking checkin: '
+             f'\nExpected: {check_in}'
+             f'\nGot: {booking_data_model.bookingdates.checkin}')
+        assert booking_data_model.bookingdates.checkout == check_out, \
+            (f'Unexpected booking checkout: '
+             f'\nExpected: {check_out}'
+             f'\nGot: {booking_data_model.bookingdates.checkout}')
+
+        return booking_id

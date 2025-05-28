@@ -19,8 +19,8 @@ class BookingApiClient(CustomRequester):
         response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}?firstname={first_name}&lastname={last_name}')
         return response
 
-    def get_booking_id_by_check_dates(self, check_dates: dict):
-        response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}')
+    def get_booking_id_by_check_dates(self, check_in: str, check_out: str):
+        response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}?checkin={check_in}&checkout={check_out}')
         return response
 
     def update_full_booking_data(self, booking_id: int, booking_data: dict):

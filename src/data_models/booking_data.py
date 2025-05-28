@@ -3,7 +3,7 @@ from src.utils.data_generator import DataGenerator
 
 
 class BookingIDsModel(BaseModel):
-    bookingid: str
+    bookingid: int
 
 
 class BookingDatesModel(BaseModel):
