@@ -2,6 +2,10 @@ from pydantic import BaseModel
 from src.utils.data_generator import DataGenerator
 
 
+class BookingIDsModel(BaseModel):
+    bookingid: str
+
+
 class BookingDatesModel(BaseModel):
     checkin: str
     checkout: str

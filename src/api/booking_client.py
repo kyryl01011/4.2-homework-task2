@@ -8,26 +8,40 @@ class BookingApiClient(CustomRequester):
         response = self.send_request('POST', self.BOOKING_ENDPOINT, json=booking_data)
         return response
 
-    def get_booking_by_id(self, booking_id: int):
-        response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}/{booking_id}')
+    def get_booking_by_id(self, booking_id: int, expected_status_code=200):
+        response = self.send_request(
+            'GET',
+            f'{self.BOOKING_ENDPOINT}/{booking_id}',
+            expected_status_code=expected_status_code)
         return response
 
-    def get_booking_by_full_name(self, first_name: str, last_name: str):
-        response = self.send_request('GET', self.get_full_url(self.BOOKING_ENDPOINT))
+    def get_booking_id_by_full_name(self, first_name: str, last_name: str):
+        response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}?firstname={first_name}&lastname={last_name}')
         return response
 
-    def get_booking_by_check_dates(self, check_dates: dict):
-        response = self.send_request('GET', self.get_full_url(self.BOOKING_ENDPOINT))
+    def get_booking_id_by_check_dates(self, check_dates: dict):
+        response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}')
         return response
 
-    def update_full_booking_data(self, booking_id: str, booking_data: dict):
-        response = self.send_request('PUT', self.get_full_url(self.BOOKING_ENDPOINT + booking_id), json=booking_data)
+    def update_full_booking_data(self, booking_id: int, booking_data: dict):
+        response = self.send_request(
+            'PUT',
+            f'{self.BOOKING_ENDPOINT}/{booking_id}',
+            json=booking_data
+        )
         return response
 
-    def update_partial_booking_data(self, booking_id: str, booking_data: dict):
-        response = self.send_request('PATCH', self.get_full_url(self.BOOKING_ENDPOINT + booking_id), json=booking_data)
+    def update_partial_booking_data(self, booking_id: int, booking_data: dict):
+        response = self.send_request(
+            'PATCH',
+            f'{self.BOOKING_ENDPOINT}/{booking_id}',
+            json=booking_data)
         return response
 
-    def delete_booking_by_id(self, booking_id: str):
-        response = self.send_request('DELETE', self.get_full_url(self.BOOKING_ENDPOINT + booking_id))
+    def delete_booking_by_id(self, booking_id: int):
+        response = self.send_request(
+            'DELETE',
+            f'{self.BOOKING_ENDPOINT}/{booking_id}',
+            expected_status_code=201
+        )
         return response

@@ -1,3 +1,4 @@
+from conftest import scenarios
 from src.data_models.booking_data import BookingDataResponse, BookingDataModel, BookingData
 
 
@@ -10,17 +11,21 @@ class TestBooking:
             0], f'Unexpected type of response data: {type(response.json())}, expected list'
         return response
 
+    def test_general(self, scenarios, booking_data):
+        created_booking_model = scenarios.create_booking(booking_data)
+        scenarios.get_booking_by_id(created_booking_model.bookingid)
+        scenarios.delete_booking_by_id(created_booking_model.bookingid)
+
     def test_successful_booking_creation(self, scenarios, booking_data) -> BookingDataResponse:
         result_model = scenarios.create_booking(booking_data)
         return result_model
 
-    def test_search_id_by_full_name(self, auth_session, booking_data):
-        booking_data = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking']
-        found_result = auth_session.send_request('GET', f'/booking?firstname={booking_data.get('firstname')}&lastname={booking_data.get('lastname')}')
-        first_match = found_result.json()[0]['bookingid']
-        assert found_result.status_code == 200
-        assert found_result.json()[0]
-        return first_match
+    def test_search_id_by_full_name(self, scenarios, booking_data):
+        created_booking_response_model = scenarios.create_booking(booking_data)
+        found_result = scenarios.get_booking_id_by_full_name(
+            created_booking_response_model.booking.firstname,
+            created_booking_response_model.booking.lastname)
+
 
     def test_search_id_by_check_dates(self, auth_session, booking_data):
         booking_dates = self.test_successful_booking_creation(auth_session, booking_data).model_dump()['booking'][
