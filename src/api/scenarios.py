@@ -46,7 +46,7 @@ class BookingScenarios:
         return response
 
     def delete_booking_by_id(self, booking_id: int):
-        delete_response = self.booking_api_client.delete_booking_by_id(booking_id)
+        self.booking_api_client.delete_booking_by_id(booking_id)
 
         deleted_booking_response: Response = self.get_booking_by_id(booking_id, expected_status_code=404)
 
@@ -61,6 +61,8 @@ class BookingScenarios:
         if booking_id_models_list:
             first_match = booking_id_models_list[0]
             booking_id = first_match.bookingid
+            if not booking_id:
+                pytest.fail(f'No booking as {first_name} {last_name} was found: got empty list!')
 
         booking_data_model = self.get_booking_by_id(booking_id)
 
@@ -92,9 +94,7 @@ class BookingScenarios:
                     booking_id = current_id
                     break
 
-        if booking_id is None:
-            pytest.fail(f'No booking as {check_in}-{check_out} check dates was found: got empty list!')
-
+        assert booking_id, f'No booking as {check_in}-{check_out} check dates was found: got empty list!'
         assert isinstance(booking_id, int), \
             (f'Unexpected ID type: '
              f'{booking_id} - '
@@ -109,3 +109,40 @@ class BookingScenarios:
              f'\nGot: {booking_data_model.bookingdates.checkout}')
 
         return booking_id
+
+    def full_booking_update(self, initial_data_model: BookingDataModel, new_data_model: BookingDataModel):
+        created_booking_response_model = self.create_booking(initial_data_model)
+        updated_booking_response = self.booking_api_client.update_full_booking_data(
+            created_booking_response_model.bookingid, new_data_model.model_dump())
+
+        updated_booking_data_model = validate_response(updated_booking_response, BookingDataModel)
+
+        initial_data_dict = created_booking_response_model.booking.model_dump()
+        updated_data_dict = updated_booking_data_model.model_dump()
+
+        for key in initial_data_dict:
+            if key == 'depositpaid':
+                continue
+            assert initial_data_dict[key] != updated_data_dict[key], \
+                (f'Updated {key} equals to initial: '
+                 f'\nInitial: {initial_data_dict[key]}'
+                 f'\nUpdated: {updated_data_dict[key]}')
+
+        return created_booking_response_model.bookingid
+
+    def partial_booking_update(self, initial_data_model: BookingDataModel, new_data_model: BookingDataModel):
+        new_data_model.depositpaid = False
+        new_data_dict = new_data_model.model_dump()
+        created_booking_response_model = self.create_booking(initial_data_model)
+
+        for key in new_data_dict:
+            print(f'Key: {key}, value: {new_data_dict[key]}')
+            updated_response = self.booking_api_client.update_partial_booking_data(
+                created_booking_response_model.bookingid,
+                {key: new_data_dict[key]})
+            updated_response_model = validate_response(updated_response, BookingDataModel)
+
+            assert getattr(created_booking_response_model.booking, key) != getattr(updated_response_model, key), \
+                f'Field {key} was not updated!'
+
+        return created_booking_response_model.bookingid

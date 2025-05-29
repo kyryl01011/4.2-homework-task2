@@ -4,7 +4,7 @@ import requests
 from src.api.auth_client import AuthApiClient
 from src.api.booking_client import BookingApiClient
 from src.api.scenarios import BookingScenarios
-from src.data_models.booking_data import BookingData
+from src.data_models.booking_data import BookingData, BookingDataModel
 from src.enums.base_request_attributes import BaseRequestAttributes
 
 
@@ -26,6 +26,7 @@ def booking_api_client(auth_session):
     client = BookingApiClient(auth_session.session)
     return client
 
+
 @pytest.fixture(scope='session')
 def scenarios(booking_api_client):
     scens = BookingScenarios(booking_api_client)
@@ -33,13 +34,20 @@ def scenarios(booking_api_client):
 
 
 @pytest.fixture(scope='session')
-def booking_data(auth_session):
-    created_data = BookingData.create_booking_data()
-    yield created_data
+def booking_data(auth_session, scenarios):
+    created_data_collection: list[BookingDataModel] = []
 
-    # booking removal teardown
-    # found_result = auth_session.send_request('GET',
-    #                                          f'/booking?firstname={created_data.firstname}&lastname={created_data.lastname}')
-    # first_match = found_result.json()[0]['bookingid']
-    # auth_session.send_request('DELETE', f'/booking/{first_match}', expected_status_code=201)
-    # auth_session.send_request('GET', f'/booking/{first_match}', expected_status_code=404)
+    def _create_booking_data():
+        created_data = BookingData.create_booking_data()
+        created_data_collection.append(created_data)
+        return created_data
+
+    yield _create_booking_data
+
+    for data_model in created_data_collection:
+        try:
+            booking_id = scenarios.get_booking_id_by_full_name(data_model.firstname, data_model.lastname)
+            scenarios.delete_booking_by_id(booking_id)
+        # Ignore modified or not created bookings
+        except UnboundLocalError as e:
+            continue
