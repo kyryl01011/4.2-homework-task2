@@ -12,7 +12,7 @@ class BookingScenarios:
         self.booking_api_client = booking_api_client
 
     def create_booking(self, booking_data: BookingDataModel) -> Type[BookingDataResponse]:
-        response = self.booking_api_client.create_booking(booking_data.model_dump())
+        response = self.booking_api_client.create_booking(booking_data)
         response_model = validate_response(response, BookingDataResponse)
 
         verify_response_model = self.get_booking_by_id(response_model.bookingid, booking_data.model_dump())
@@ -113,7 +113,7 @@ class BookingScenarios:
     def full_booking_update(self, initial_data_model: BookingDataModel, new_data_model: BookingDataModel):
         created_booking_response_model = self.create_booking(initial_data_model)
         updated_booking_response = self.booking_api_client.update_full_booking_data(
-            created_booking_response_model.bookingid, new_data_model.model_dump())
+            created_booking_response_model.bookingid, new_data_model)
 
         updated_booking_data_model = validate_response(updated_booking_response, BookingDataModel)
 

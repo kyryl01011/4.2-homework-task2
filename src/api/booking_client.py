@@ -4,7 +4,7 @@ from custom_requester.custom_requester import CustomRequester
 class BookingApiClient(CustomRequester):
     BOOKING_ENDPOINT = '/booking'
 
-    def create_booking(self, booking_data: dict):
+    def create_booking(self, booking_data):
         response = self.send_request('POST', self.BOOKING_ENDPOINT, json=booking_data)
         return response
 
@@ -23,7 +23,7 @@ class BookingApiClient(CustomRequester):
         response = self.send_request('GET', f'{self.BOOKING_ENDPOINT}?checkin={check_in}&checkout={check_out}')
         return response
 
-    def update_full_booking_data(self, booking_id: int, booking_data: dict):
+    def update_full_booking_data(self, booking_id: int, booking_data):
         response = self.send_request(
             'PUT',
             f'{self.BOOKING_ENDPOINT}/{booking_id}',
@@ -31,7 +31,7 @@ class BookingApiClient(CustomRequester):
         )
         return response
 
-    def update_partial_booking_data(self, booking_id: int, booking_data: dict):
+    def update_partial_booking_data(self, booking_id: int, booking_data):
         response = self.send_request(
             'PATCH',
             f'{self.BOOKING_ENDPOINT}/{booking_id}',
