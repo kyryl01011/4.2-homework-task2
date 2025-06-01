@@ -11,7 +11,7 @@ class BookingScenarios:
     def __init__(self, booking_api_client: BookingApiClient):
         self.booking_api_client = booking_api_client
 
-    def create_booking(self, booking_data: BookingDataModel) -> Type[BookingDataResponse]:
+    def create_booking(self, booking_data: BookingDataModel) -> BookingDataResponse:
         response = self.booking_api_client.create_booking(booking_data)
         response_model = validate_response(response, BookingDataResponse)
 
@@ -34,7 +34,7 @@ class BookingScenarios:
             booking_id,
             expected_data: dict | None = None,
             expected_status_code=200
-    ) -> Type[BookingDataResponse]:
+    ) -> BookingDataResponse:
         response = self.booking_api_client.get_booking_by_id(booking_id, expected_status_code=expected_status_code)
         if expected_status_code in (200, 201):
             response_model = validate_response(
@@ -47,7 +47,6 @@ class BookingScenarios:
 
     def delete_booking_by_id(self, booking_id: int):
         self.booking_api_client.delete_booking_by_id(booking_id)
-
         deleted_booking_response: Response = self.get_booking_by_id(booking_id, expected_status_code=404)
 
         assert deleted_booking_response.text == 'Not Found', \
@@ -114,7 +113,6 @@ class BookingScenarios:
         created_booking_response_model = self.create_booking(initial_data_model)
         updated_booking_response = self.booking_api_client.update_full_booking_data(
             created_booking_response_model.bookingid, new_data_model)
-
         updated_booking_data_model = validate_response(updated_booking_response, BookingDataModel)
 
         initial_data_dict = created_booking_response_model.booking.model_dump()
@@ -146,3 +144,7 @@ class BookingScenarios:
                 f'Field {key} was not updated!'
 
         return created_booking_response_model.bookingid
+
+    def create_and_delete_booking(self, booking_data: BookingDataModel):
+        created_booking_model = self.create_booking(booking_data)
+        self.delete_booking_by_id(created_booking_model.bookingid)
