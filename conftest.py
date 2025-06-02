@@ -3,7 +3,7 @@ import requests
 
 from src.api.auth_client import AuthApiClient
 from src.api.booking_client import BookingApiClient
-from src.api.scenarios import BookingScenarios
+from src.scenarios.scenarios import BookingScenarios
 from src.data_models.booking_data import BookingData, BookingDataModel
 from src.enums.base_request_attributes import BaseRequestAttributes
 

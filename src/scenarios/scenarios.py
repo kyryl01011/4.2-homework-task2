@@ -4,7 +4,6 @@ from requests import Response
 from src.api.booking_client import BookingApiClient
 from src.data_models.booking_data import BookingDataModel, BookingDataResponse, BookingIDsModel
 from src.utils.data_validator import validate_response
-from typing import Type
 
 
 class BookingScenarios:

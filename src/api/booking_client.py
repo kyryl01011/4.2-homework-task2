@@ -1,4 +1,4 @@
-from custom_requester.custom_requester import CustomRequester
+from src.custom_requester.custom_requester import CustomRequester
 
 
 class BookingApiClient(CustomRequester):

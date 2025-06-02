@@ -1,4 +1,4 @@
-from custom_requester.custom_requester import CustomRequester
+from src.custom_requester.custom_requester import CustomRequester
 from src.enums.base_request_attributes import BaseRequestAttributes
 
 
