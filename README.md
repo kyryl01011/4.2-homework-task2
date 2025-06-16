@@ -1,3 +1,9 @@
+Absolutely\! Including instructions for environment variables is a crucial best practice, especially for API tests that often require credentials or specific URLs.
+
+Here's the updated `README.md` for the RESTful-Booker API tests, incorporating the `.env-copy` setup instructions.
+
+-----
+
 # Automated API Tests for RESTful-Booker API
 
 ## 📝 Project Description
@@ -58,6 +64,20 @@ Install all required Python libraries listed in the `requirements.txt` file:
 ```bash
 pip install -r requirements.txt
 ```
+
+### 4\. Configure Environment Variables
+
+This project uses environment variables to store sensitive information (like API credentials) or configurable parameters.
+
+1.  **Create a `.env` file:** Copy the provided `env-copy` file and rename it to `.env` in the root directory of the project.
+
+    ```bash
+    cp env-copy .env
+    ```
+
+    *(For Windows CMD, use `copy env-copy .env`)*
+
+2.  **Edit the `.env` file:** Open the newly created `.env` file and fill in your specific credentials or configuration details according to the template provided inside.
 
 ## 🚀 Running Tests
 
